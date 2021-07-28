@@ -208,7 +208,13 @@ metadata:
   namespace: pihole
   annotations:
     kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    acme.cert-manager.io/http01-edit-in-place: "true"
 spec:
+  tls:
+   - secretName: pihole-tls
+     hosts:
+      - pihole.donthurt.us
   rules:
   - host: pihole.donthurt.us
     http:

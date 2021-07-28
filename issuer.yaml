@@ -1,0 +1,32 @@
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Issuer
+metadata:
+  name: letsencrypt-prod
+  namespace: pihole
+spec:
+  acme:
+    email: mike@donthurt.us
+    privateKeySecretRef:
+      name: letsencrypt-prod
+    server: https://acme-v02.api.letsencrypt.org/directory
+    solvers:
+    - dns01:
+        acmedns:
+          host: https://auth.acme-dns.io
+          accountSecretRef:
+            name: acme-dns
+            key: acme.json
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: pihole-tls
+  namespace: pihole
+spec:
+  secretName: pihole-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: Issuer
+  dnsNames:
+  - pihole.donthurt.us
