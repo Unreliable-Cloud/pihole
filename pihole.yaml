@@ -77,7 +77,7 @@ spec:
            - rpi3
    containers:
     - name: pihole
-      image: pihole/pihole:latest
+      image: docker.io/pihole/pihole:latest
       resources:
        limits:
         memory: 128Mi
@@ -190,7 +190,7 @@ spec:
  type: LoadBalancer
  externalTrafficPolicy: Local
 ---
-apiVersion: policy/v1beta1
+apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   name: pihole-pdb
@@ -201,7 +201,7 @@ spec:
     matchLabels:
       app: pihole
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: pihole-ingress
@@ -220,6 +220,9 @@ spec:
     http:
       paths:
       - path: /
+        pathType: ImplementationSpecific
         backend:
-          serviceName: pihole-service-tcp
-          servicePort: 8080
+          service:
+            name: pihole-service-tcp
+            port:
+              number: 8080
