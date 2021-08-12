@@ -74,7 +74,12 @@ spec:
         - key: kubernetes.io/pi-type
           operator: In
           values:
-           - rpi3
+           - nopi
+   tolerations:
+   - key: dedicated
+     operator: "Equal"
+     value: intel
+     effect: "NoSchedule"
    containers:
     - name: pihole
       image: docker.io/pihole/pihole:latest
@@ -189,17 +194,6 @@ spec:
     targetPort: 53
  type: LoadBalancer
  externalTrafficPolicy: Local
----
-apiVersion: policy/v1
-kind: PodDisruptionBudget
-metadata:
-  name: pihole-pdb
-  namespace: pihole
-spec:
-  maxUnavailable: 1
-  selector:
-    matchLabels:
-      app: pihole
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
