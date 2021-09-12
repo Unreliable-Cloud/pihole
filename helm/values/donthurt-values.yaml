@@ -1,0 +1,38 @@
+commonLabels:
+  app: pihole
+  platform: k8s
+  dc: msn
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 75Mi
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    acme.cert-manager.io/http01-edit-in-place: "true"
+  hosts:
+    - host: pihole.donthurt.us
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: pihole-tcp
+              port:
+                number: 8080
+  tls:
+    - secretName: pihole-tls
+      hosts:
+        - pihole.donthurt.us
+
+nodeSelector:
+  beta.kubernetes.io/os: linux
+  kubernetes.io/pi-type: nopi

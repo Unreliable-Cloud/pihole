@@ -36,10 +36,20 @@ Common labels
 {{- define "pihole.labels" -}}
 helm.sh/chart: {{ include "pihole.chart" . }}
 {{ include "pihole.selectorLabels" . }}
+{{ include "pihole.commonLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
+{{/*
+Common labels
+*/}}
+{{- define "pihole.commonLabels" -}}
+{{- if .Values.commonLabels }}
+{{- toYaml .Values.commonLabels }}
+{{- end }}
 {{- end }}
 
 {{/*

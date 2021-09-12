@@ -14,6 +14,12 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+# Add labels to all deployed objects
+commonLabels: {}
+  # app: pihole
+  # platform: k8s
+  # dc: msn
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
@@ -81,13 +87,13 @@ udpService:
 
 ingress:
   enabled: true
-  className: "nginx"
+  # Set to your IngressClass if applicable. Not required if a default IngressClass is configured.
+  # This functions the same as the deprecated kubernetes.io/ingress.class annotation
+  className: ""
   annotations:
     kubernetes.io/tls-acme: "true"
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    acme.cert-manager.io/http01-edit-in-place: "true"
   hosts:
-    - host: pihole.donthurt.us
+    - host: pihole.example.com
       paths:
         - path: /
           pathType: ImplementationSpecific
@@ -99,22 +105,24 @@ ingress:
   tls:
     - secretName: pihole-tls
       hosts:
-        - pihole.donthurt.us
+        - pihole.example.com
 
-resources:
-  limits:
-    cpu: 200m
-    memory: 128Mi
-  requests:
-    cpu: 100m
-    memory: 75Mi
+# Container resource limits and requests are suggested but not required
+resources: {}
+  # limits:
+  #   cpu: 200m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 75Mi
 
 # Pihole will not work with multiple replicas due to the SQLite backend
 autoscaling:
   enabled: false
 
-nodeSelector:
-  kubernetes.io/pi-type: nopi
+nodeSelector: {}
+  # beta.kubernetes.io/os: linux
+  # kubernetes.io/arch: arm64
 
 tolerations: []
 
