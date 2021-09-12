@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "pihole.fullname" . }}-tcp
+  labels:
+    {{- include "pihole.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.tcpService.type }}
+  ports:
+    - port: {{ .Values.tcpService.port | default 8080 }}
+      targetPort: {{ .Values.tcpService.targetPort | default 80 }}
+      protocol: {{ .Values.tcpService.protocol | default "UDP" }}
+      name: {{ .Values.tcpService.name | default "web" }}
+  selector:
+    {{- include "pihole.selectorLabels" . | nindent 4 }}
+  {{- if .Values.udpService.externalTrafficPolicy }}
+  externalTrafficPolicy: {{ .Values.udpService.externalTrafficPolicy }}
+  {{- end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "pihole.fullname" . }}-udp
+  labels:
+    {{- include "pihole.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.udpService.type }}
+  ports:
+    - port: {{ .Values.udpService.port | default 53 }}
+      targetPort: {{ .Values.udpService.targetPort | default 53 }}
+      protocol: {{ .Values.udpService.protocol | default "UDP" }}
+      name: {{ .Values.udpService.name | default "dns" }}
+  selector:
+    {{- include "pihole.selectorLabels" . | nindent 4 }}
+  {{- if .Values.udpService.externalTrafficPolicy }}
+  externalTrafficPolicy: {{ .Values.udpService.externalTrafficPolicy }}
+  {{- end }}

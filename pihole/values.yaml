@@ -1,0 +1,119 @@
+# Default values for pihole.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: docker.io/pihole/pihole
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+config:
+  whitelist: |
+    console.google.com
+    electrum.com
+  adlists: |
+    https://gitlab.com/youvegotmoxie/pihole/-/raw/master/blocklist.txt
+  regex: |
+    (\.|^)yahoomobile\.com$
+    (\.|^)www\.yahoomobile\.com$
+
+env:
+  TZ: "America/Chicago"
+  DNS1: 1.1.1.1
+  DNS2: 8.8.8.8
+
+updateStrategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxSurge: 1
+    maxUnavailable: 1
+
+
+tcpService:
+  type: NodePort
+  port: 8080
+  targetPort: 80
+  name: web
+  protocol: TCP
+  externalTrafficPolicy: Local
+
+udpService:
+  type: LoadBalancer
+  port: 53
+  targetPort: 53
+  name: dns
+  protcol: UDP
+  externalTrafficPolicy: Local
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    acme.cert-manager.io/http01-edit-in-place: "true"
+  hosts:
+    - host: pihole.donthurt.us
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: pihole-service-tcp
+              port:
+                number: 8080
+  tls:
+    - secretName: pihole-tls
+      hosts:
+        - pihole.donthurt.us
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 75Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+nodeSelector:
+  kubernetes.io/pi-type: nopi
+
+tolerations: []
+
+affinity: {}
