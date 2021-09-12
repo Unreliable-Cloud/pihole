@@ -12,9 +12,9 @@ spec:
     matchLabels:
       {{- include "pihole.selectorLabels" . | nindent 6 }}
     {{- with .Values.updateStrategy }}
-    strategy:
-      {{- toYaml . | nindent 6 }}
-    {{- end }}
+  strategy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -37,10 +37,18 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            {{- range $key, $value :=  .Values.env }}
+            - name: {{ $key | upper | replace "-" "_" }}
+              value: {{ $value | quote }}
+            {{- end }}
+            - name: WEBPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pihole-secret
+                  key: password
           ports:
-            - name: web
-              containerPort: 80
-              protocol: TCP
+            - containerPort: 80
           lifecycle:
             postStart:
               exec:
@@ -60,6 +68,49 @@ spec:
             periodSeconds: 30
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          {{- if .Values.customConfig.enabled }}
+          volumeMounts:
+            {{- if .Values.customConfig.whiteList.enabled }}
+            - name: pihole-white
+              mountPath: "/etc/pihole/whitelist.txt"
+              subPath: whitelist.txt
+            {{- end }}
+            {{- if .Values.customConfig.adList.enabled }}
+            - name: pihole-ads
+              mountPath: "/etc/pihole/adlists.list"
+              subPath: adlists.list
+            {{- end }}
+            {{- if .Values.customConfig.blackList.enabled }}
+            - name: pihole-regex
+              mountPath: "/etc/pihole/regex.list"
+              subPath: regex.list
+            {{- end }}
+      volumes:
+        {{- if .Values.customConfig.whiteList.enabled }}
+        - name: pihole-white
+          configMap:
+           name: pihole-white
+           items:
+            - key: whitelist.txt
+              path: whitelist.txt
+        {{- end }}
+        {{- if .Values.customConfig.adList.enabled }}
+        - name: pihole-ads
+          configMap:
+           name: pihole-ads
+           items:
+            - key: adlists.list
+              path: adlists.list
+        {{- end }}
+        {{- if .Values.customConfig.blackList.enabled }}
+        - name: pihole-regex
+          configMap:
+           name: pihole-regex
+           items:
+            - key: regex.list
+              path: regex.list
+        {{- end }}
+      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

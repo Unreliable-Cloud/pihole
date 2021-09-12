@@ -1,0 +1,41 @@
+{{- if .Values.customConfig.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pihole-white
+  labels:
+    {{- include "pihole.labels" . | nindent 4 }}
+data:
+  whitelist.txt: |
+    console.cloud.google.com
+    www3.l.google.com
+    fonts.googleapis.com
+    fonts.gstatic.com
+    www.googletagmanager.com
+    electrum.org
+    reddit.com
+    maps.googleapis.com
+    maps.gstatic.com
+    shopify.com
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pihole-ads
+  labels:
+    {{- include "pihole.labels" . | nindent 4 }}
+data:
+  adlists.list: |
+    https://gitlab.com/youvegotmoxie/pihole/-/raw/master/blocklist.txt
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pihole-regex
+  labels:
+    {{- include "pihole.labels" . | nindent 4 }}
+data:
+  regex.list: |
+    (\.|^)yahoomobile\.com$
+    (\.|^)www\.yahoomobile\.com$
+{{- end }}

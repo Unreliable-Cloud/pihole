@@ -11,5 +11,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "pihole.fullname" . }}:{{ .Values.tcpService.port }}']
+      args: ['{{ include "pihole.fullname" . }}-tcp:{{ .Values.tcpService.port }}']
   restartPolicy: Never
