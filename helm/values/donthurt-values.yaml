@@ -1,7 +1,6 @@
 commonLabels:
   app: pihole
   platform: k8s
-  dc: msn
 
 resources:
   limits:
@@ -34,5 +33,11 @@ ingress:
         - pihole.donthurt.us
 
 nodeSelector:
-  beta.kubernetes.io/os: linux
-  kubernetes.io/pi-type: nopi
+  kubernetes.io/os: linux
+  storage-tier: ssd
+
+tolerations:
+  - key: 'storage'
+    operator: 'Equal'
+    value: 'ssd'
+    effect: 'NoSchedule'
