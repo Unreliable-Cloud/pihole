@@ -1,6 +1,5 @@
 commonLabels:
   app: pihole
-  platform: k8s
 
 resources:
   limits:

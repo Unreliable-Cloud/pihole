@@ -3,7 +3,7 @@ name: pihole
 description: A Helm chart for deploying Pihole
 type: application
 version: 0.1.1
-appVersion: "v5.4"
+appVersion: "v5.6"
 keywords:
 - pihole
 - dns

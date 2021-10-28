@@ -8,17 +8,15 @@ image:
   repository: docker.io/pihole/pihole
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "2021.09"
+  tag: "2021.10.1"
 
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
 # Add labels to all deployed objects
-commonLabels: {}
-  # app: pihole
-  # platform: k8s
-  # dc: msn
+commonLabels:
+  version: "2021.10.1"
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -42,7 +40,7 @@ securityContext:
 
 # Create an Egress NetworkPolicy allowing only 53/UDP and 53/TCP
 networkPolicy:
-  enabled: true
+  enabled: false
 
 # Enable configuration of custom blacklist, adlist and whitelists for domains
 # These items are configured in the configmap.yaml template
