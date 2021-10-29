@@ -84,26 +84,32 @@ udpService:
   externalTrafficPolicy: Local
 
 ingress:
-  enabled: true
+  enabled: false
   # Set to your IngressClass if applicable. Not required if a default IngressClass is configured.
   # This functions the same as the deprecated kubernetes.io/ingress.class annotation
-  className: ""
-  annotations:
-    kubernetes.io/tls-acme: "true"
-  hosts:
-    - host: pihole.example.com
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
-          backend:
-            service:
-              name: pihole-tcp
-              port:
-                number: 8080
-  tls:
-    - secretName: pihole-tls
-      hosts:
-        - pihole.example.com
+  # className: ""
+  # annotations:
+  #   kubernetes.io/tls-acme: "true"
+  # hosts:
+  #   - host: pihole.example.com
+  #     paths:
+  #       - path: /
+  #         pathType: ImplementationSpecific
+  #         backend:
+  #           service:
+  #             name: pihole-tcp
+  #             port:
+  #               number: 8080
+  # tls:
+  #   - secretName: pihole-tls
+  #     hosts:
+  #       - pihole.example.com
+
+istio:
+  gateway:
+    enabled: false
+  virtualService:
+     enabled: false
 
 # Container resource limits and requests are suggested but not required
 resources: {}

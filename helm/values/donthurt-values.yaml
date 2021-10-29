@@ -9,26 +9,16 @@ resources:
     cpu: 100m
     memory: 75Mi
 
-ingress:
-  enabled: true
-  className: "istio"
-  annotations:
-    kubernetes.io/tls-acme: "true"
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-  hosts:
-    - host: pihole.donthurt.us
-      paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: pihole-tcp
-              port:
-                number: 8080
-  tls:
-    - secretName: pihole-tls
-      hosts:
-        - pihole.donthurt.us
+istio:
+  gateway:
+    enabled: true
+    selector: ingressgateway
+    tls:
+      enabled: true
+      credentialName: pihole-tls
+    hostName: pihole.donthurt.us
+  virtualService:
+    enabled: true
 
 nodeSelector:
   kubernetes.io/os: linux
