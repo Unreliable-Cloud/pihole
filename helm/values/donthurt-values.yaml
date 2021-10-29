@@ -11,16 +11,15 @@ resources:
 
 ingress:
   enabled: true
-  className: "nginx"
+  className: "istio"
   annotations:
     kubernetes.io/tls-acme: "true"
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    acme.cert-manager.io/http01-edit-in-place: "true"
   hosts:
     - host: pihole.donthurt.us
       paths:
         - path: /
-          pathType: ImplementationSpecific
+          pathType: Prefix
           backend:
             service:
               name: pihole-tcp

@@ -1,0 +1,44 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    acme.cert-manager.io/http01-edit-in-place: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/tls-acme: "true"
+    meta.helm.sh/release-name: pihole
+    meta.helm.sh/release-namespace: pihole
+  creationTimestamp: "2021-10-14T16:14:59Z"
+  generation: 1
+  labels:
+    app: pihole
+    app.kubernetes.io/instance: pihole
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: pihole
+    app.kubernetes.io/version: v5.6
+    helm.sh/chart: pihole-0.1.1
+    version: 2021.10.1
+  name: pihole
+  namespace: pihole
+  resourceVersion: "7784268"
+  uid: 25dc1a47-3e75-4b35-aee3-801eb3d8f04c
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: pihole.donthurt.us
+    http:
+      paths:
+      - backend:
+          service:
+            name: pihole-tcp
+            port:
+              number: 8080
+        path: /
+        pathType: ImplementationSpecific
+  tls:
+  - hosts:
+    - pihole.donthurt.us
+    secretName: pihole-tls
+status:
+  loadBalancer:
+    ingress:
+    - ip: 192.168.1.234
