@@ -1,0 +1,14 @@
+---
+{{- if .Values.istio.virtualService.trafficPolicy -}}
+{{- $fullName := include "pihole.fullname" . -}}
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+ name: {{ $fullName }}
+spec:
+ host: {{ include "pihole.fullname" . }}.{{ .Release.Namespace}}.svc.cluster.local
+   {{- with .Values.istio.virtualService.trafficPolicy }}
+ trafficPolicy:
+   {{- toYaml . | nindent 5 }}
+ {{- end }}
+{{- end }}
