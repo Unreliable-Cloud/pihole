@@ -16,4 +16,10 @@ spec:
        port:
          number: {{ .Values.tcpService.port | default 8080 }}
        host: {{ include "pihole.fullname" . }}-tcp.{{ .Release.Namespace}}.svc.cluster.local
+   {{- if .Values.istio.virtualService.retries }}
+   {{- with .Values.istio.virtualService.retries }}
+   retries:
+   {{- toYaml . | nindent 5 }}
+   {{- end }}
+   {{- end }}
 {{- end }}

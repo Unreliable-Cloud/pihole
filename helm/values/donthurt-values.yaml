@@ -19,6 +19,9 @@ istio:
     hostName: pihole.donthurt.us
   virtualService:
     enabled: true
+    retries:
+     attempts: 3
+     perTryTimeout: 1s
 
 nodeSelector:
   kubernetes.io/os: linux
