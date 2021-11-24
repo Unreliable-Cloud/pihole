@@ -1,4 +1,5 @@
 ---
+{{- if .Values.istio.virtualService.enabled -}}
 {{- if .Values.istio.virtualService.trafficPolicy -}}
 {{- $fullName := include "pihole.fullname" . -}}
 apiVersion: networking.istio.io/v1beta1
@@ -11,4 +12,5 @@ spec:
  trafficPolicy:
    {{- toYaml . | nindent 5 }}
  {{- end }}
+{{- end }}
 {{- end }}

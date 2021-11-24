@@ -9,16 +9,37 @@ resources:
     cpu: 100m
     memory: 75Mi
 
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/issuer: letsencrypt-prod
+  hosts:
+    - host: pihole.donthurt.us
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: pihole-tcp
+              port:
+                number: 8080
+  tls:
+    - secretName: pihole-tls
+      hosts:
+        - pihole.donthurt.us
+
 istio:
   gateway:
-    enabled: true
+    enabled: false
     selector: ingressgateway
     tls:
-      enabled: true
+      enabled: false
       credentialName: pihole-tls
     hostName: pihole.donthurt.us
   virtualService:
-    enabled: true
+    enabled: false
     retries: {}
      # attempts: 3
      # perTryTimeout: 1s
