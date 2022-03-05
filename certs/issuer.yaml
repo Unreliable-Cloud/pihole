@@ -18,7 +18,7 @@ spec:
             name: pihole-acme-dns
             key: acme.json
 ---
-apiVersion: cert-manager.io/v1alpha2
+apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: pihole-tls
