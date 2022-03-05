@@ -8,8 +8,8 @@ helm:
 targetCustomizations:
 - name: prod
   helm:
-  valuesFiles:
-    - values/k3s-rpi-values.yaml
+    valuesFiles:
+      - values/k3s-rpi-values.yaml
   clusterSelector:
     matchLabels:
       env: prod
