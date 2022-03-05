@@ -2,7 +2,7 @@ commonLabels:
   app: pihole
 
 networkPolicy:
-  enabled: false
+  enabled: true
 
 resources:
   limits:
