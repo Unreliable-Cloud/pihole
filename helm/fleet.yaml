@@ -4,12 +4,13 @@ helm:
   releaseName: pihole
   valuesFiles:
     - values.yaml
-    - values/k3s-rpi-values.yaml
 
-rolloutStrategy:
-  partitions:
-  - name: prod
-    clusterSelector:
-      matchLabels:
-        env: prod
-        clusterName: k3s-rpi
+targetCustomizations:
+- name: prod
+  helm:
+  valuesFiles:
+    - values/k3s-rpi-values.yaml
+  clusterSelector:
+    matchLabels:
+      env: prod
+      clusterName: k3s-rpi
