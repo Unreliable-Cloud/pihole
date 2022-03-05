@@ -6,7 +6,7 @@ helm:
     - values.yaml
     - values/k3s-rpi-values.yaml
 
-- name: k3s-rpi
+- name: prod
   clusterSelector:
     matchLabels:
       env: prod
