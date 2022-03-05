@@ -3,7 +3,6 @@ namespace: pihole
 helm:
   releaseName: pihole
   valuesFiles:
-    - values.yaml
     - values/k3s-rpi-values.yaml
 
 rolloutStrategy:
