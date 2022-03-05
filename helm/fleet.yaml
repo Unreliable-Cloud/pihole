@@ -1,11 +1,19 @@
 namespace: pihole
+
 helm:
   releaseName: pihole
   valuesFiles:
+    - values.yaml
     - values/k3s-rpi-values.yaml
 
-- name: prod
-  clusterSelector:
-    matchLabels:
-      env: prod
-      clusterName: k3s-rpi
+rolloutStrategy:
+    maxUnavailable: 15%
+    maxUnavailablePartitions: 20%
+    autoPartitionSize: 10%
+    partitions:
+    - name: canary
+      maxUnavailable: 10%
+      clusterSelector:
+        matchLabels:
+          env: prod
+          clusterName: k3s-rpi
