@@ -6,14 +6,8 @@ helm:
     - values.yaml
     - values/k3s-rpi-values.yaml
 
-rolloutStrategy:
-    maxUnavailable: 15%
-    maxUnavailablePartitions: 20%
-    autoPartitionSize: 10%
-    partitions:
-    - name: canary
-      maxUnavailable: 10%
-      clusterSelector:
-        matchLabels:
-          env: prod
-          clusterName: k3s-rpi
+- name: k3s-rpi
+  clusterSelector:
+    matchLabels:
+      env: prod
+      clusterName: k3s-rpi
