@@ -1,6 +1,9 @@
 commonLabels:
   app: pihole
 
+networkPolicy:
+  enabled: false
+
 resources:
   limits:
     cpu: 200m
@@ -50,10 +53,3 @@ istio:
 
 nodeSelector:
   kubernetes.io/os: linux
-  storage-tier: ssd
-
-tolerations:
-  - key: 'storage'
-    operator: 'Equal'
-    value: 'ssd'
-    effect: 'NoSchedule'
