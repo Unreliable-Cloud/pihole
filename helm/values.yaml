@@ -81,7 +81,7 @@ udpService:
   targetPort: 53
   name: dns
   protcol: UDP
-  externalTrafficPolicy: Local
+  externalTrafficPolicy: Cluster
 
 ingress:
   enabled: false
