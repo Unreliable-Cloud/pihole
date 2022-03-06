@@ -1,6 +1,5 @@
 commonLabels:
   app: pihole
-  env: prod
 
 networkPolicy:
   enabled: true

@@ -2,5 +2,5 @@ apiVersion: v2
 name: pihole
 description: A Helm chart for deploying Pihole
 type: application
-version: 0.1.5
+version: 0.1.6
 appVersion: "v5.8"
