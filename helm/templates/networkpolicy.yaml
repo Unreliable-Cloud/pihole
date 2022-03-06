@@ -9,19 +9,7 @@ spec:
   podSelector:
     matchLabels:
       {{- include "pihole.selectorLabels" . | nindent 6 }}
-  policyTypes:
-  - Egress
-  egress:
-  - to:
-    - ipBlock:
-        cidr: 0.0.0.0/0
-    ports:
-    - protocol: TCP
-      port: 53
-    - protocol: TCP
-      port: 443
-    - protocol: TCP
-      port: 80
-    - protocol: UDP
-      port: 53
+  {{- with .Values.networkPolicy.policy }}
+  {{- toYaml . | nindent 2 }}
+  {{- end }}
 {{- end }}

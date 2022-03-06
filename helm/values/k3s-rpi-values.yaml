@@ -3,6 +3,36 @@ commonLabels:
 
 networkPolicy:
   enabled: true
+  policy:
+    policyTypes:
+    - Egress
+    - Ingress
+    egress:
+    - to:
+      - ipBlock:
+          cidr: 0.0.0.0/0
+      ports:
+      - protocol: TCP
+        port: 53
+      - protocol: TCP
+        port: 443
+      - protocol: TCP
+        port: 80
+      - protocol: UDP
+        port: 53
+    ingress:
+    - from:
+      - ipBlock:
+          cidr: 192.168.0.0/16
+      ports:
+      - protocol: TCP
+        port: 53
+      - protocol: TCP
+        port: 443
+      - protocol: TCP
+        port: 80
+      - protocol: UDP
+        port: 53
 
 resources:
   limits:
