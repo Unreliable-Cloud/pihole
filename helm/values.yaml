@@ -8,7 +8,7 @@ image:
   repository: docker.io/pihole/pihole
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "2021.10.1"
+  tag: "2022.02.1"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -16,7 +16,7 @@ fullnameOverride: ""
 
 # Add labels to all deployed objects
 commonLabels:
-  version: "2021.10.1"
+  version: "2022.02.1"
 
 serviceAccount:
   # Specifies whether a service account should be created
