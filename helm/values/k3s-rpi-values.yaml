@@ -2,7 +2,7 @@ commonLabels:
   app: pihole
 
 networkPolicy:
-  enabled: true
+  enabled: false
   policy:
     policyTypes:
     - Egress
