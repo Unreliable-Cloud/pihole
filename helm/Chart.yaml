@@ -3,4 +3,4 @@ name: pihole
 description: A Helm chart for deploying Pihole
 type: application
 version: 0.1.8
-appVersion: "v5.8"
+appVersion: "v5.9"
