@@ -1,3 +1,6 @@
+image:
+  repository: harbor-core.k8s.donthurt.us/docker-external/pihole/pihole
+
 commonLabels:
   app: pihole
 
