@@ -1,3 +1,3 @@
 # Pihole
 
-Kubernetes manifests for Pihole
+Helm chart for Pihole
